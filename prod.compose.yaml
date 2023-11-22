@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+  traefik:
+    container_name: 'traefik'
+    image: 'traefik'
+    restart: unless-stopped
+    command:
+      # - '--log.level=DEBUG'
+      - '--api.insecure=true'
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--entrypoints.websecure.address=:443'
+      - '--certificatesresolvers.myresolver.acme.tlschallenge=true'
+      # - '--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory'
+      - '--certificatesresolvers.myresolver.acme.email=2spy4x@gmail.com'
+      - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
+    ports:
+      - '443:443'
+      - '80:80'
+    #      - "8080:8080"
+    volumes:
+      - './letsencrypt:/letsencrypt'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  app:
+    container_name: app
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: prod.dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 3072M
+    env_file:
+      - .env.prod
+    depends_on:
+      db:
+        condition: service_healthy
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.app.rule=Host(`makearoley.com`) || Host(`www.makearoley.com`)'
+      - 'traefik.http.routers.app.entrypoints=websecure'
+      - 'traefik.http.routers.app.tls=true'
+      - 'traefik.http.routers.app.tls.certresolver=myresolver'
+      - 'traefik.http.services.app.loadbalancer.server.port=3000'
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  db:
+    container_name: db
+    image: postgres:15-alpine
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
+    ports:
+      - 5432:5432
+    environment:
+      - PGUSER=${DB_USER}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./.volumes/prod/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"

@@ -1,0 +1,26 @@
+# OS
+.DS_Store
+
+# IDE
+.idea
+.vscode
+
+# Configs
+.env
+.env.*
+!.env.example
+.sentryclirc
+
+# Packages
+node_modules
+
+# Artifacts
+/build
+/.svelte-kit
+/package
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.volumes
+
+# Logs
+/tests/load/log.csv

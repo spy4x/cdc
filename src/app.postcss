@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    @apply h-full overflow-hidden;
+  }
+  :root {
+    --theme-font-family-base: 'Courier Prime', sans-serif;
+    --theme-font-family-heading: 'Patrick Hand', cursive;
+  }
+}
+
+@layer components {
+  .lines {
+    @apply inline-block;
+    background-image: url('/img/lines-left.svg'), url('/img/lines-right.svg');
+    background-position:
+      left center,
+      right center;
+    background-repeat: no-repeat, no-repeat;
+    background-size: contain, contain;
+  }
+
+  .h1 {
+    @apply lines;
+    @apply py-4 px-12 text-center uppercase;
+  }
+
+  .h2 {
+    @apply text-4xl font-normal;
+  }
+
+  .h3 {
+    font-family: var(--theme-font-family-base);
+    @apply tracking-normal;
+  }
+
+  .card {
+    @apply bg-white rounded-3xl border-2 border-gray-300;
+  }
+
+  .btn {
+    font-family: var(--theme-font-family-heading);
+    @apply text-base py-2 px-4 uppercase font-semibold tracking-wide;
+    @apply flex items-center gap-2 text-black bg-white h-11;
+    @apply rounded-full border-2 border-black relative overflow-visible;
+    @apply hover:filter-none;
+    @apply before:rounded-full;
+    @apply before:block;
+    @apply before:absolute before:-z-10 before:top-px before:left-px before:-right-1 before:-bottom-1;
+    @apply disabled:before:opacity-40;
+  }
+
+  .btn-sm {
+    @apply text-sm py-2 px-4 h-8;
+  }
+
+  .btn-xl {
+    @apply text-lg py-4 px-8 h-16;
+  }
+
+  .variant-filled-secondary {
+    @apply bg-transparent before:bg-roley-pink hover:before:bg-roley-pink/80;
+  }
+
+  .variant-filled-tertiary {
+    @apply bg-transparent before:bg-roley-cyan/50 hover:before:bg-roley-cyan/60;
+  }
+
+  .variant-filled-primary {
+    @apply bg-transparent before:bg-roley-purple/50 hover:before:bg-roley-purple/60;
+  }
+
+  .variant-filled-edit {
+    @apply bg-transparent before:bg-roley-yellow/50 hover:before:bg-roley-yellow/60;
+  }
+
+  .variant-filled-surface {
+    @apply bg-transparent before:bg-roley-blue/50 hover:before:bg-roley-blue/60;
+  }
+
+  .variant-filled-error {
+    @apply bg-transparent before:bg-roley-red/50 hover:before:bg-roley-red/60;
+  }
+
+  .variant-filled-warning {
+    @apply bg-transparent before:bg-roley-orange/50 hover:before:bg-roley-orange/60;
+  }
+
+  .variant-filled-success {
+    @apply bg-transparent before:bg-roley-green/50 hover:before:bg-roley-green/60;
+  }
+
+  .input,
+  .textarea,
+  .select {
+    @apply border-2 border-gray-300 h-11;
+  }
+
+  .select {
+    @apply pl-4;
+  }
+
+  .textarea,
+  .select {
+    @apply rounded-3xl;
+  }
+
+  .textarea {
+    @apply h-auto;
+  }
+
+  [type='checkbox'], [type='radio'], .checkbox, .radio {
+    @apply text-roley-purple ring-transparent focus:ring-transparent;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .paper-stack {
+    @apply inline-block bg-white relative border-2 border-black shadow-sm;
+    @apply after:content-[''] after:block after:absolute after:bg-gray-50 after:shadow-sm;
+    @apply after:h-full after:w-full;
+    @apply after:border-2 after:border-black;
+    @apply after:-right-1 after:top-1 after:z-[-2] after:rotate-2;
+    @apply before:h-full before:w-full;
+    @apply before:content-[''] before:block before:absolute before:bg-gray-50 before:shadow-sm;
+    @apply before:border-2 before:border-black;
+    @apply before:left-0 before:-top-1 before:z-[-1] before:-rotate-2;
+  }
+
+  .list-square {
+    @apply list-none pl-5;
+  }
+  .list-square li {
+    @apply relative before:block before:content-[''] before:w-1 before:h-1 before:bg-black before:absolute before:-left-3.5 before:top-2.5;
+  }
+
+  .variant-filled-success {
+    @apply bg-roley-green;
+  }
+  .variant-filled-danger {
+    @apply bg-roley-red;
+  }
+}
